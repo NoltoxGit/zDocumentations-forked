@@ -1,4 +1,5 @@
 import { createMcpHandler, McpServer } from "@modelcontextprotocol/server";
+import { CfWorkerJsonSchemaValidator } from "@modelcontextprotocol/server/validators/cf-worker";
 import { registerSourceTools } from "fumadocs-core/mcp";
 import { z } from "zod";
 import { source, docsLlms } from "@/lib/api-source";
@@ -9,6 +10,7 @@ const handler = createMcpHandler(() => {
   const server = new McpServer(
     { name: "GroupeZ Documentation", version: "1.1.1" },
     {
+      jsonSchemaValidator: new CfWorkerJsonSchemaValidator(),
       instructions:
         "Read-only GroupeZ documentation. Answer in the language of the latest user message unless the user explicitly requests another language; re-evaluate each turn. Source language must not dictate response language. Use search (locale fr for French, en otherwise), then get_page for exact examples. Cite source URLs. Preserve commands, placeholders and YAML keys without translation. French pages may fall back to English. No API key required. Cannot run commands or change a Minecraft server.",
     },

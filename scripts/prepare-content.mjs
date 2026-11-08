@@ -153,7 +153,7 @@ await write(
     2,
   ) + "\n",
 );
-let revision = process.env.GITHUB_SHA || "";
+let revision = process.env.WORKERS_CI_COMMIT_SHA || process.env.GITHUB_SHA || "";
 let commit = { date: "", subject: "", author: "" };
 const githubAuthors = JSON.parse(
   await fs.readFile(path.join(root, "git-authors.json"), "utf8"),
