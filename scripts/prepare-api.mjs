@@ -35,7 +35,13 @@ for (const file of source.files) {
     },
   });
 }
-await fs.writeFile(".generated/api-content.json", JSON.stringify(files));
+// The portable API source only needs page metadata and Markdown. Search uses
+// its own index below, so duplicating structured data in this file wastes
+// Worker memory and CPU on every cold start.
+await fs.writeFile(
+  ".generated/api-content.json",
+  JSON.stringify(files.map(({ data: { structuredData, ...data }, ...file }) => ({ ...file, data }))),
+);
 const manifest = JSON.parse(
   await fs.readFile(".generated/manifest.json", "utf8"),
 );
